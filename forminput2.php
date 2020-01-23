@@ -1,34 +1,59 @@
-#include <stdio.h>
-#include <math.h>
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Area of a Circle</title>
+  </head>
 
-float areaofCircle(float radius) {
-  float area = radius*radius*M_PI;
-  return area;
-}
 
-int main(int argc, char* argv[]) {
-  char inString[256];
-  float minR, maxR, temp;
-  if (argc < 3) {
-    printf("Please input the minimum value:\n");
-    fgets(inString, 256, stdin);
-    sscanf(inString, "%f", &minR);
-    printf("Please input the maximum value:\n");
-    fgets(inString, 256, stdin);
-    sscanf(inString, "%f", &maxR);
-  }
-  else {
-    sscanf(argv[1], "%f", &minR);
-    sscanf(argv[2], "%f", &maxR);
-  }
-  if (minR > maxR) {
-      printf("Minimum value is greater than the maximum value, using minimum as maximum\n");
-      temp = minR;
-      minR = maxR;
-      maxR = temp;
-    } 
-  for (float i = minR; i <= maxR; i++) {
-     float solution = areaofCircle(i);
-     printf("%f\n", solution);
-  }
-}
+  <body>
+
+    <h1>Area of a Circle</h1>
+    <p>Input the lower and upper bounds of the radii</p>
+
+    <?php
+       // define variables and set to empty values
+       $arg1 = $arg2 = $output = $retc = "";
+
+       if ($_SERVER["REQUEST_METHOD"] == "POST") {
+         $arg1 = test_input($_POST["arg1"]);
+         $arg2 = test_input($_POST["arg2"]);
+         exec("/usr/lib/cgi-bin/sp2a/areaOfCircle2 " . $arg1 . " " . $arg2, $output, $retc); 
+       }
+
+       function test_input($data) {
+         $data = trim($data);
+         $data = stripslashes($data);
+         $data = htmlspecialchars($data);
+         return $data;
+       }
+    ?>
+
+    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+      Arg1: <input type="text" name="arg1"><br>
+      Arg2: <input type="text" name="arg2"><br>
+      <br>
+      <input type="submit" value="Go!">
+    </form>
+
+    <?php
+       // only display if return code is numeric - i.e. exec has been called
+       if (is_numeric($retc)) {
+         echo "<h2>Your Input:</h2>";
+         echo $arg1;
+         echo "<br>";
+         echo $arg2;
+         echo "<br>";
+       
+         echo "<h2>Program Output (an array):</h2>";
+         foreach ($output as $line) {
+           echo $line;
+           echo "<br>";
+         }
+       
+         echo "<h2>Program Return Code:</h2>";
+         echo $retc;
+       }
+    ?>
+    
+  </body>
+</html>
