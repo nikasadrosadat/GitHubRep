@@ -1,59 +1,41 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Area of a Circle</title>
-  </head>
+#include <stdio.h>
 
+float areaOfCircle(float radius) 
+{
+  float area = (3.14159265358979323846 * radius * radius);
+  return area;
+}
 
-  <body>
+int main(int argc, char* argv[])
+{
+ if (argc != 3)
+  {
+    printf("%s : expected 2 args, please enter two floats\n", argv[0]);
+    return 1;
+  }
+  
+  float lower;
+  int found = sscanf(argv[1], "%f", &lower);
+  if (found != 1)
+    {
+	printf("First arg is not a decimal, enter two floats\n");
+	return 1;
+    }
 
-    <h1>Area of a Circle</h1>
-    <p>Input the lower and upper bounds of the radii</p>
-
-    <?php
-       // define variables and set to empty values
-       $arg1 = $arg2 = $output = $retc = "";
-
-       if ($_SERVER["REQUEST_METHOD"] == "POST") {
-         $arg1 = test_input($_POST["arg1"]);
-         $arg2 = test_input($_POST["arg2"]);
-         exec("/usr/lib/cgi-bin/sp2a/areaOfCircle2 " . $arg1 . " " . $arg2, $output, $retc); 
-       }
-
-       function test_input($data) {
-         $data = trim($data);
-         $data = stripslashes($data);
-         $data = htmlspecialchars($data);
-         return $data;
-       }
-    ?>
-
-    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
-      Arg1: <input type="text" name="arg1"><br>
-      Arg2: <input type="text" name="arg2"><br>
-      <br>
-      <input type="submit" value="Go!">
-    </form>
-
-    <?php
-       // only display if return code is numeric - i.e. exec has been called
-       if (is_numeric($retc)) {
-         echo "<h2>Your Input:</h2>";
-         echo $arg1;
-         echo "<br>";
-         echo $arg2;
-         echo "<br>";
-       
-         echo "<h2>Program Output (an array):</h2>";
-         foreach ($output as $line) {
-           echo $line;
-           echo "<br>";
-         }
-       
-         echo "<h2>Program Return Code:</h2>";
-         echo $retc;
-       }
-    ?>
-    
-  </body>
-</html>
+  float upper;
+  found = sscanf(argv[2], "%f", &upper);
+  if (found != 1)
+    {
+	printf("Second arg is not a decimal, enter two floats\n");
+	return 1;
+    }
+  //printf("Enter a lower bound:\n");
+  //scanf("%f", &lower);
+  //printf("Enter an upper bound:\n");
+  //scanf("%f", &upper);
+  for (float radius = lower; radius <= upper; radius++)
+    {
+	float result = areaOfCircle(radius);
+	printf("Area at r = %f: %f\n", radius, result);
+    }
+}
